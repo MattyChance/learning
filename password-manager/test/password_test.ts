@@ -9,7 +9,7 @@ const assert = (isTrue: boolean, message: string) => {
 import {
   mixMatchRules, validateLength, validateNoOfCapitalLetters, validateNoOfSpecialCharacter, validateNoOfLowerCaseLetters,
   validateCustomizeRule, validateBlacklist
-} from "../validator.ts";
+} from "../validator";
 
 // assert(validatePassword('1234568989', 8), 'Password should be longer than 8 characters');
 // assert(validatePassword('12345', 8) === false, 'Password should not be valid for less than 8 characters');
@@ -45,9 +45,7 @@ import {
 
 assert(mixMatchRules('123456789eE', validateLength(10), validateNoOfCapitalLetters(1)) === true, 'Password should be at least 10 character long with one uppercase letter');
 assert(mixMatchRules('123456eE', validateLength(10), validateNoOfCapitalLetters(1)) === false, 'Password should not be less than 10 character long with one uppercase letter');
-// console.log('rule1', validateLength('123456eerere3432',10));
-// console.log('rule2', validateNoOfCapitalLetters('123456eerere3432', 1));
-assert(mixMatchRules('123456eerere3432', validateLength(10), validateNoOfCapitalLetters(1)) === false, 'Password should have at least one uppercase letter');
+assert(mixMatchRules('123456erere3432', validateLength(10), validateNoOfCapitalLetters(1)) === false, 'Password should have at least one uppercase letter');
 
 // user 1 wants:
 //  length > 10

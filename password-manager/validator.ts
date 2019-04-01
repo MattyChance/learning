@@ -27,16 +27,17 @@
 // }
 
 export function validateLength (number: number): (input: string) => boolean {
-  console.log('>>>>>>>>>>>>>>>>>')
   return (input: string) => {
     return input.length > number;
   };
 }
 
 export function validateNoOfCapitalLetters (number: number): (input: string) => boolean {
-    return () => true;
-    // return (input) => !!input.match(/[A-Z]/g) && input.match(/[A-Z]/g).length >= number;
+  return (input) => {
+    const findCapital = input.match(/[A-Z]/g);
 
+    return !!findCapital && findCapital.length >= number;
+  }
 }
 
 export function validateNoOfLowerCaseLetters () {
@@ -57,8 +58,5 @@ export function validateBlacklist () {
 
 // error messages: give users reason why a test fails
 export function mixMatchRules (input: string, ...rules: ((val: string) => boolean)[]): boolean {
-  return rules.reduce( (rule1, rule2) => {
-    console.log('????????????????? ', rule1);
-    return typeof rule1 !== 'function' ? rule1 && rule2(input) : rule1(input) && rule2(input);
-    }, true);
+  return rules.map(rule => rule(input)).reduce((val, val2) => val && val2, true);
 }
