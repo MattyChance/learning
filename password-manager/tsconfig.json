@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        /* Basic Options */
+        "target": "es2017",
+        "module": "commonjs",
+        "allowJs": false,
+        "sourceMap": true,
+        "removeComments": false,
+        "importHelpers": false,
+
+        /* Strict Type-Checking Options */
+        "strict": true,
+
+        /* Additional Checks */
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+
+        /* Experimental Options */
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
