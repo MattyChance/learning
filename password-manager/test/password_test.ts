@@ -9,7 +9,7 @@ const assert = (isTrue: boolean, message: string) => {
 import {
   mixMatchRules, validateLength, validateNoOfCapitalLetters, validateNoOfSpecialCharacter, validateNoOfLowerCaseLetters,
   validateCustomizeRule, validateBlacklist
-} from "../validator";
+} from "../validator.ts";
 
 // assert(validatePassword('1234568989', 8), 'Password should be longer than 8 characters');
 // assert(validatePassword('12345', 8) === false, 'Password should not be valid for less than 8 characters');
@@ -52,22 +52,59 @@ assert(mixMatchRules('123456erere3432', validateLength(10), validateNoOfCapitalL
 //  special characters >= 1
 //  a mix of uppercase and lowercase
 
-// mixMatchRules('123456789eE', validateLength(11), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1));
+assert(mixMatchRules(
+    '123456789eE#', validateLength(10), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1)) === true,
+    'Password should be at least 10 character long with at leaset one special character, one capital letter and one lower case letter'
+);
+
+assert(mixMatchRules(
+    '123456789E$', validateLength(10), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1)) === false,
+    'Password should NOT only have uppercase letters'
+);
+
+assert(mixMatchRules(
+    '123456789eer', validateLength(10), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1)) === false,
+    'Password should NOT only have lowercase letters'
+);
+
+assert(mixMatchRules(
+    '12345eR$', validateLength(10), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1)) === false,
+    'Password should NOT be shorter than 10 characters'
+);
+
+assert(mixMatchRules(
+    '123456789eE', validateLength(10), validateNoOfSpecialCharacter(1), validateNoOfLowerCaseLetters(1), validateNoOfCapitalLetters(1)) === false,
+    'Password should have at least ONE special character'
+);
+
 // user 2 wants:
 //  length >= 15
 //  special characters > 1 and uppercase > 1 OR special characters > 2 and uppercase >= 0
 
-// mixMatchRules('', validateLength(15), validateNoOfSpecialCharacter(1), validateNoOfCapitalLetters(1), validateNoOfSpecialCharacter(2), validateNoOfCapitalLetters(0));
+assert( mixMatchRules(
+    '', validateLength(15), validateNoOfSpecialCharacter(1), validateNoOfCapitalLetters(1), validateNoOfSpecialCharacter(2), validateNoOfCapitalLetters(0)),
+    'Password should be longer than 15 characters '
+    );
 
 // user 3 wants:
 //  length = 10
 //  and a custom rule
 
-// mixMatchRules('', validateLength(10, '==='), validateCustomizeRule());
+function hasStringMatty(input: string): boolean {
+  return input.includes('matty');
+}
+
+assert(mixMatchRules('mattyeatsburgers', validateLength(10), validateCustomizeRule(hasStringMatty)), 'Should have more than 10 characters and pass a customized rule');
+assert(mixMatchRules('noONeeatsburgers', validateLength(10), validateCustomizeRule(hasStringMatty)), 'Should have string "matty" in the password');
 
 // user 4 wants:
 //  length >= 5
 // all uppercase letters
 // one special character
 // can't match against a blacklist (e.g. nebez, matty, alexis)
-// mixMatchRules('', validateLength(5), validateNoOfCapitalLetters('all'), validateNoOfSpecialCharacter(1, '==='), validateBlacklist(['nebez1', 'nebez2']));
+
+const blacklist = ['nebez1', 'nebez2'];
+assert(
+    mixMatchRules('yeezy123456', validateLength(5), validateNoOfCapitalLetters('all'), validateNoOfSpecialCharacter(1, '==='), validateBlacklist(blacklist)),
+    'Password should have a minimum length of 5 Characters and does not have a string from the black list'
+);

@@ -40,20 +40,30 @@ export function validateNoOfCapitalLetters (number: number): (input: string) => 
   }
 }
 
-export function validateNoOfLowerCaseLetters () {
+export function validateNoOfLowerCaseLetters (number: number): (input: string) => boolean {
+  return (input) => {
+    const findLowercase = input.match(/[a-z]/g);
 
+    return !!findLowercase && findLowercase.length >= number;
+  }
 }
 
-export function validateNoOfSpecialCharacter () {
+export function validateNoOfSpecialCharacter (number: number): (input: string) => boolean {
+  return (input) => {
+    const findSpecialCharacter = input.match(/[!@#$%^&*(),.?":{}|<>]/g);
 
+    return !!findSpecialCharacter && findSpecialCharacter.length >= number;
+  }
 }
 
-export function validateCustomizeRule () {
-
+export function validateCustomizeRule (customizeRule: (val: string) => boolean): (input: string) => boolean {
+  return (input) => customizeRule(input);
 }
 
-export function validateBlacklist () {
-
+export function validateBlacklist (list: any[]): (input: string) => boolean {
+  return (input) => {
+   return list.indexOf(input) === -1;
+  }
 }
 
 // error messages: give users reason why a test fails
